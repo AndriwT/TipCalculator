@@ -1,7 +1,27 @@
-import { useState } from "react";
+import { useState, KeyboardEvent, ChangeEvent, MouseEventHandler } from "react";
 
 const InputTip = () => {
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState("");
+  const [percent, setPercent] = useState("");
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTotal(e.target.value);
+  };
+
+  const handleClick = (e: any) => {
+    setPercent(e.target.value);
+    console.log(percent);
+  };
+
+  // const onSetClick = (e: MouseEventHandler<HTMLInputElement>) => {
+  //   setPercent(e.target.value)
+  // }
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      // calculate();
+    }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center pt-12">
@@ -9,7 +29,13 @@ const InputTip = () => {
       <div className="flex flex-col flex-center items-center main-h-screen pt-20">
         <div className="flex">
           <p className="pr-4">$</p>
-          <input placeholder="Enter bill total" className="text-black" />
+          <input
+            placeholder="Enter bill total"
+            className="text-black"
+            onKeyDown={handleKeyDown}
+            onChange={handleChange}
+            value={total}
+          />
         </div>
         <fieldset className="flex pt-6 pb-6">
           <div className="flex flex-col pr-4">
@@ -37,13 +63,18 @@ const InputTip = () => {
           <h2>How many people are splitting the tip?</h2>
           <input placeholder="1" className="w-12 mt-4 text-black" />
         </div>
-        <button className="bg-blue-300 px-16 py-2 rounded-md">Calculate</button>
+        <button
+          className="bg-blue-300 px-16 py-2 rounded-md"
+          onClick={handleClick}
+        >
+          Calculate
+        </button>
       </div>
       <div className="flex mt-4">
         <h2 className="mr-4">Tip per person:</h2>
         <>
           <p>$</p>
-          <p>42</p>
+          <p>5</p>
         </>
       </div>
     </div>
