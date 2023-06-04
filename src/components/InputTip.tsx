@@ -2,9 +2,10 @@ import { useState, KeyboardEvent, ChangeEvent, MouseEventHandler } from "react";
 
 const InputTip = () => {
   const [total, setTotal] = useState("");
-  const [percent, setPercent] = useState("4");
-  const [people, setPeople] = useState("");
-  const [tip, setTip] = useState("");
+  const [percent, setPercent] = useState("0.20");
+  const [people, setPeople] = useState("1");
+  const [tip, setTip] = useState("$ 0");
+  const [netTotal, setNetTotal] = useState("$ 0");
 
   const handleTotalChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value);
@@ -30,18 +31,19 @@ const InputTip = () => {
     let percentNum = Number(percent);
     let peopleNum = Number(people);
     let totalTip = (totalNum * percentNum) / peopleNum;
-    setTip(totalTip.toString());
+    setTip("$ " + totalTip.toFixed(2).toString());
+    setNetTotal("$ " + (totalTip + totalNum).toFixed(2).toString());
   };
 
   return (
-    <div className="flex flex-col justify-center items-center pt-12">
+    <div className="flex flex-col justify-center items-center pt-8 p-8 mt-10 bg-stone-500 rounded-3xl">
       <h1 className="text-3xl">Welcome to Tip-Tap!</h1>
       <div className="flex flex-col flex-center items-center main-h-screen pt-20">
-        <div className="flex">
-          <p className="pr-4">$</p>
+        <div className="flex items-center">
+          <p className="pr-2 text-3xl">$</p>
           <input
             placeholder="Enter bill total"
-            className="text-black"
+            className="text-black rounded-full p-2"
             onKeyDown={handleKeyDown}
             onChange={handleTotalChange}
             value={total}
@@ -107,15 +109,14 @@ const InputTip = () => {
         <div className="flex flex-col items-center pb-10">
           <h2>How many people are splitting the tip?</h2>
           <input
-            placeholder="1"
-            className="w-12 mt-4 text-black"
+            className="w-10 mt-4 text-black p-2 rounded-full"
             onKeyDown={handleKeyDown}
             onChange={handlePeopleChange}
             value={people}
           />
         </div>
         <button
-          className="bg-blue-300 px-16 py-2 rounded-md"
+          className="bg-blue-300 px-16 py-2 rounded-full"
           onClick={calculate}
         >
           Calculate
@@ -124,8 +125,13 @@ const InputTip = () => {
       <div className="flex mt-4">
         <h2 className="mr-4">Tip per person:</h2>
         <>
-          <p>$</p>
           <p>{tip}</p>
+        </>
+      </div>
+      <div className="flex mt-4">
+        <h2 className="mr-4">Net Total:</h2>
+        <>
+          <p>{netTotal}</p>
         </>
       </div>
     </div>
