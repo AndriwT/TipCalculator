@@ -2,25 +2,35 @@ import { useState, KeyboardEvent, ChangeEvent, MouseEventHandler } from "react";
 
 const InputTip = () => {
   const [total, setTotal] = useState("");
-  const [percent, setPercent] = useState("");
+  const [percent, setPercent] = useState("4");
+  const [people, setPeople] = useState("");
+  const [tip, setTip] = useState("");
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleTotalChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value);
   };
 
-  const handleClick = (e: any) => {
-    setPercent(e.target.value);
-    console.log(percent);
+  const handlePeopleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPeople(e.target.value);
   };
-
-  // const onSetClick = (e: MouseEventHandler<HTMLInputElement>) => {
-  //   setPercent(e.target.value)
-  // }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      // calculate();
+      calculate();
     }
+  };
+
+  const isRatingSelected = (value: string): boolean => percent === value;
+
+  const handleRatingClick = (e: ChangeEvent<HTMLInputElement>): void =>
+    setPercent(e.currentTarget.value);
+
+  const calculate = () => {
+    let totalNum = Number(total);
+    let percentNum = Number(percent);
+    let peopleNum = Number(people);
+    let totalTip = (totalNum * percentNum) / peopleNum;
+    setTip(totalTip.toString());
   };
 
   return (
@@ -33,39 +43,80 @@ const InputTip = () => {
             placeholder="Enter bill total"
             className="text-black"
             onKeyDown={handleKeyDown}
-            onChange={handleChange}
+            onChange={handleTotalChange}
             value={total}
           />
         </div>
         <fieldset className="flex pt-6 pb-6">
           <div className="flex flex-col pr-4">
-            <input type="radio" name="rating" id="1" value="1" />
+            <input
+              type="radio"
+              name="rating"
+              id="1"
+              value="0.05"
+              checked={isRatingSelected("0.05")}
+              onChange={handleRatingClick}
+            />
             <label htmlFor="1">1</label>
           </div>
           <div className="flex flex-col pr-4">
-            <input type="radio" name="rating" id="2" value="2" />
+            <input
+              type="radio"
+              name="rating"
+              id="2"
+              value="0.10"
+              checked={isRatingSelected("0.10")}
+              onChange={handleRatingClick}
+            />
             <label htmlFor="2">2</label>
           </div>
           <div className="flex flex-col pr-4">
-            <input type="radio" name="rating" id="3" value="3" />
+            <input
+              type="radio"
+              name="rating"
+              id="3"
+              value="0.15"
+              checked={isRatingSelected("0.15")}
+              onChange={handleRatingClick}
+            />
             <label htmlFor="3">3</label>
           </div>
           <div className="flex flex-col pr-4">
-            <input type="radio" name="rating" id="4" value="4" />
+            <input
+              type="radio"
+              name="rating"
+              id="4"
+              value="0.20"
+              checked={isRatingSelected("0.20")}
+              onChange={handleRatingClick}
+            />
             <label htmlFor="4">4</label>
           </div>
           <div className="flex flex-col">
-            <input type="radio" name="rating" id="5" value="5" />
+            <input
+              type="radio"
+              name="rating"
+              id="5"
+              value="0.25"
+              checked={isRatingSelected("0.25")}
+              onChange={handleRatingClick}
+            />
             <label htmlFor="5">5</label>
           </div>
         </fieldset>
         <div className="flex flex-col items-center pb-10">
           <h2>How many people are splitting the tip?</h2>
-          <input placeholder="1" className="w-12 mt-4 text-black" />
+          <input
+            placeholder="1"
+            className="w-12 mt-4 text-black"
+            onKeyDown={handleKeyDown}
+            onChange={handlePeopleChange}
+            value={people}
+          />
         </div>
         <button
           className="bg-blue-300 px-16 py-2 rounded-md"
-          onClick={handleClick}
+          onClick={calculate}
         >
           Calculate
         </button>
@@ -74,7 +125,7 @@ const InputTip = () => {
         <h2 className="mr-4">Tip per person:</h2>
         <>
           <p>$</p>
-          <p>5</p>
+          <p>{tip}</p>
         </>
       </div>
     </div>
