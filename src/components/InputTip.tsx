@@ -6,6 +6,7 @@ const InputTip = () => {
   const [people, setPeople] = useState("1");
   const [tip, setTip] = useState("$ 0");
   const [netTotal, setNetTotal] = useState("$ 0");
+  const [netTotalPerPerson, setNetTotalPerPerson] = useState("$ 0");
 
   const handleTotalChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value);
@@ -30,9 +31,13 @@ const InputTip = () => {
     let totalNum = Number(total);
     let percentNum = Number(percent);
     let peopleNum = Number(people);
-    let totalTip = (totalNum * percentNum) / peopleNum;
-    setTip("$ " + totalTip.toFixed(2).toString());
-    setNetTotal("$ " + (totalTip + totalNum).toFixed(2).toString());
+    let totalTipNum = Number(totalNum * percentNum);
+    let totalTipPerPerson = (totalNum * percentNum) / peopleNum;
+    let netTotalPerPerson = (totalNum + totalTipNum) / peopleNum;
+
+    setTip("$ " + totalTipPerPerson.toFixed(2).toString());
+    setNetTotal("$ " + (totalTipNum + totalNum).toFixed(2).toString());
+    setNetTotalPerPerson("$ " + netTotalPerPerson.toFixed(2).toString());
   };
 
   return (
@@ -123,15 +128,21 @@ const InputTip = () => {
         </button>
       </div>
       <div className="flex mt-4">
+        <h2 className="mr-4">Net Total:</h2>
+        <>
+          <p>{netTotal}</p>
+        </>
+      </div>
+      <div className="flex mt-4">
         <h2 className="mr-4">Tip per person:</h2>
         <>
           <p>{tip}</p>
         </>
       </div>
       <div className="flex mt-4">
-        <h2 className="mr-4">Net Total:</h2>
+        <h2 className="mr-4">Net Total Per Person:</h2>
         <>
-          <p>{netTotal}</p>
+          <p>{netTotalPerPerson}</p>
         </>
       </div>
     </div>
