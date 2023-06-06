@@ -53,45 +53,47 @@ const InputTip = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center pt-8 p-8 mt-10 bg-stone-500 rounded-3xl">
-      <h2 className="text-xl">Welcome to</h2>
-      <h1 className="text-6xl">Tip-Tap!</h1>
-      <div className="flex flex-col flex-center items-center main-h-screen pt-10">
-        <div className="flex items-center">
-          <div>
-            <h2>Bill total</h2>
-            <div className="flex">
-              <p className="pr-2 text-3xl">$</p>
+    <div className="flex flex-col justify-center items-center mt-10 mb-10 bg-gray-400 rounded-3xl">
+      <div className="flex flex-col justify-center items-center rounded-t-3xl bg-gradient-to-t from-cyan-900 to-teal-500 p-10 shadow-lg">
+        <h2 className="text-xl">Welcome to</h2>
+        <h1 className="text-6xl">Tip-Tap!</h1>
+        <div className="flex flex-col flex-center items-center main-h-screen pt-10">
+          <div className="flex items-center">
+            <div>
+              <h2>Bill total</h2>
+              <div className="flex">
+                <p className="pr-2 text-3xl">$</p>
+                <input
+                  className="text-white text-2xl bg-transparent border-b-2 mb-8 mr-4 h-10 w-52"
+                  onKeyDown={handleKeyDown}
+                  onChange={handleTotalChange}
+                  value={total}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <h2>Split</h2>
               <input
-                className="text-white text-2xl bg-transparent border-b-2 mb-8 mr-4 h-10 w-52"
+                className="w-10 text-white text-2xl bg-transparent border-b-2 mb-6 h-8"
                 onKeyDown={handleKeyDown}
-                onChange={handleTotalChange}
-                value={total}
+                onChange={handlePeopleChange}
+                value={people}
               />
             </div>
           </div>
-          <div className="flex flex-col items-center">
-            <h2>Split</h2>
-            <input
-              className="w-10 text-white text-2xl bg-transparent border-b-2 mb-6 h-8"
-              onKeyDown={handleKeyDown}
-              onChange={handlePeopleChange}
-              value={people}
+          <div className="flex flex-col items-center star-rating mb-4">
+            <h3 className="text-xs">Rate your experience</h3>
+            <Rating
+              name="rating"
+              value={rating}
+              onStarClick={(nextValue, prevValue) =>
+                handleStarClick(nextValue, prevValue)
+              }
+              starCount={5}
+              starColor={"#ffb400"}
+              emptyStarColor={"#ccc"}
             />
           </div>
-        </div>
-        <div className="flex flex-col items-center star-rating mb-4">
-          <h3 className="text-xs">Rate your experience</h3>
-          <Rating
-            name="rating"
-            value={rating}
-            onStarClick={(nextValue, prevValue) =>
-              handleStarClick(nextValue, prevValue)
-            }
-            starCount={5}
-            starColor={"#ffb400"}
-            emptyStarColor={"#ccc"}
-          />
         </div>
         <button
           className="bg-blue-300 px-16 py-2 rounded-full"
@@ -100,24 +102,18 @@ const InputTip = () => {
           Calculate
         </button>
       </div>
-      <div className="flex flex-col items-end">
-        <div className="flex mt-4">
-          <h2 className="mr-4">Net Total:</h2>
-          <>
-            <p>{netTotal}</p>
-          </>
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mt-4">
+          <h2 className="text-xs mr-4">Net Total</h2>
+          <p className="text-4xl">{netTotal}</p>
         </div>
-        <div className="flex mt-4">
-          <h2 className="mr-4">Tip per person:</h2>
-          <>
-            <p>{tip}</p>
-          </>
+        <div className="flex flex-col items-center mt-4">
+          <h2 className="text-xs mr-4">Split Tip</h2>
+          <p className="text-4xl">{tip}</p>
         </div>
-        <div className="flex mt-4">
-          <h2 className="mr-4">Net Total Per Person:</h2>
-          <>
-            <p>{netTotalPerPerson}</p>
-          </>
+        <div className="flex flex-col items-center mt-4 mb-4">
+          <h2 className="text-xs mr-4">Split Net Total</h2>
+          <p className="text-4xl">{netTotalPerPerson}</p>
         </div>
       </div>
     </div>
