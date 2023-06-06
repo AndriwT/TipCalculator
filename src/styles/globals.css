@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.dv-star-rating-star {
+  font-size: 32px;
+}
+
+.start-rating {
+  width: 40px;
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;

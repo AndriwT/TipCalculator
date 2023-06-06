@@ -1,12 +1,14 @@
 import { useState, KeyboardEvent, ChangeEvent, MouseEventHandler } from "react";
+import Rating from "react-star-rating-component";
 
 const InputTip = () => {
   const [total, setTotal] = useState("");
+  const [rating, setRating] = useState(0);
   const [percent, setPercent] = useState("0.20");
   const [people, setPeople] = useState("1");
-  const [tip, setTip] = useState("$ 0");
-  const [netTotal, setNetTotal] = useState("$ 0");
-  const [netTotalPerPerson, setNetTotalPerPerson] = useState("$ 0");
+  const [tip, setTip] = useState("$ 0.00");
+  const [netTotal, setNetTotal] = useState("$ 0.00");
+  const [netTotalPerPerson, setNetTotalPerPerson] = useState("$ 0.00");
 
   const handleTotalChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value);
@@ -22,10 +24,20 @@ const InputTip = () => {
     }
   };
 
-  const isRatingSelected = (value: string): boolean => percent === value;
-
-  const handleRatingClick = (e: ChangeEvent<HTMLInputElement>): void =>
-    setPercent(e.currentTarget.value);
+  const handleStarClick = (nextValue: number, prevValue: number) => {
+    setRating(nextValue);
+    if (nextValue === 1) {
+      setPercent("0.05");
+    } else if (nextValue === 2) {
+      setPercent("0.10");
+    } else if (nextValue === 3) {
+      setPercent("0.15");
+    } else if (nextValue === 4) {
+      setPercent("0.20");
+    } else if (nextValue === 5) {
+      setPercent("0.25");
+    }
+  };
 
   const calculate = () => {
     let totalNum = Number(total);
@@ -42,82 +54,43 @@ const InputTip = () => {
 
   return (
     <div className="flex flex-col justify-center items-center pt-8 p-8 mt-10 bg-stone-500 rounded-3xl">
-      <h1 className="text-3xl">Welcome to Tip-Tap!</h1>
-      <div className="flex flex-col flex-center items-center main-h-screen pt-20">
+      <h2 className="text-xl">Welcome to</h2>
+      <h1 className="text-6xl">Tip-Tap!</h1>
+      <div className="flex flex-col flex-center items-center main-h-screen pt-10">
         <div className="flex items-center">
-          <p className="pr-2 text-3xl">$</p>
-          <input
-            placeholder="Enter bill total"
-            className="text-black rounded-full p-2"
-            onKeyDown={handleKeyDown}
-            onChange={handleTotalChange}
-            value={total}
-          />
+          <div>
+            <h2>Bill total</h2>
+            <div className="flex">
+              <p className="pr-2 text-3xl">$</p>
+              <input
+                className="text-white text-2xl bg-transparent border-b-2 mb-8 mr-4 h-10 w-52"
+                onKeyDown={handleKeyDown}
+                onChange={handleTotalChange}
+                value={total}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col items-center">
+            <h2>Split</h2>
+            <input
+              className="w-10 text-white text-2xl bg-transparent border-b-2 mb-6 h-8"
+              onKeyDown={handleKeyDown}
+              onChange={handlePeopleChange}
+              value={people}
+            />
+          </div>
         </div>
-        <fieldset className="flex pt-6 pb-6">
-          <div className="flex flex-col pr-4">
-            <input
-              type="radio"
-              name="rating"
-              id="1"
-              value="0.05"
-              checked={isRatingSelected("0.05")}
-              onChange={handleRatingClick}
-            />
-            <label htmlFor="1">1</label>
-          </div>
-          <div className="flex flex-col pr-4">
-            <input
-              type="radio"
-              name="rating"
-              id="2"
-              value="0.10"
-              checked={isRatingSelected("0.10")}
-              onChange={handleRatingClick}
-            />
-            <label htmlFor="2">2</label>
-          </div>
-          <div className="flex flex-col pr-4">
-            <input
-              type="radio"
-              name="rating"
-              id="3"
-              value="0.15"
-              checked={isRatingSelected("0.15")}
-              onChange={handleRatingClick}
-            />
-            <label htmlFor="3">3</label>
-          </div>
-          <div className="flex flex-col pr-4">
-            <input
-              type="radio"
-              name="rating"
-              id="4"
-              value="0.20"
-              checked={isRatingSelected("0.20")}
-              onChange={handleRatingClick}
-            />
-            <label htmlFor="4">4</label>
-          </div>
-          <div className="flex flex-col">
-            <input
-              type="radio"
-              name="rating"
-              id="5"
-              value="0.25"
-              checked={isRatingSelected("0.25")}
-              onChange={handleRatingClick}
-            />
-            <label htmlFor="5">5</label>
-          </div>
-        </fieldset>
-        <div className="flex flex-col items-center pb-10">
-          <h2>How many people are splitting the tip?</h2>
-          <input
-            className="w-10 mt-4 text-black p-2 rounded-full"
-            onKeyDown={handleKeyDown}
-            onChange={handlePeopleChange}
-            value={people}
+        <div className="flex flex-col items-center star-rating mb-4">
+          <h3 className="text-xs">Rate your experience</h3>
+          <Rating
+            name="rating"
+            value={rating}
+            onStarClick={(nextValue, prevValue) =>
+              handleStarClick(nextValue, prevValue)
+            }
+            starCount={5}
+            starColor={"#ffb400"}
+            emptyStarColor={"#ccc"}
           />
         </div>
         <button
@@ -127,23 +100,25 @@ const InputTip = () => {
           Calculate
         </button>
       </div>
-      <div className="flex mt-4">
-        <h2 className="mr-4">Net Total:</h2>
-        <>
-          <p>{netTotal}</p>
-        </>
-      </div>
-      <div className="flex mt-4">
-        <h2 className="mr-4">Tip per person:</h2>
-        <>
-          <p>{tip}</p>
-        </>
-      </div>
-      <div className="flex mt-4">
-        <h2 className="mr-4">Net Total Per Person:</h2>
-        <>
-          <p>{netTotalPerPerson}</p>
-        </>
+      <div className="flex flex-col items-end">
+        <div className="flex mt-4">
+          <h2 className="mr-4">Net Total:</h2>
+          <>
+            <p>{netTotal}</p>
+          </>
+        </div>
+        <div className="flex mt-4">
+          <h2 className="mr-4">Tip per person:</h2>
+          <>
+            <p>{tip}</p>
+          </>
+        </div>
+        <div className="flex mt-4">
+          <h2 className="mr-4">Net Total Per Person:</h2>
+          <>
+            <p>{netTotalPerPerson}</p>
+          </>
+        </div>
       </div>
     </div>
   );
