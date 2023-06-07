@@ -47,9 +47,14 @@ const InputTip = () => {
     let totalTipPerPerson = (totalNum * percentNum) / peopleNum;
     let netTotalPerPerson = (totalNum + totalTipNum) / peopleNum;
 
-    setTip("$ " + totalTipPerPerson.toFixed(2).toString());
+    if (!people) {
+      alert("Please enter Bill Total and Split amount");
+    } else {
+      setTip("$ " + totalTipPerPerson.toFixed(2).toString());
+      setNetTotalPerPerson("$ " + netTotalPerPerson.toFixed(2).toString());
+    }
+
     setNetTotal("$ " + (totalTipNum + totalNum).toFixed(2).toString());
-    setNetTotalPerPerson("$ " + netTotalPerPerson.toFixed(2).toString());
   };
 
   return (
