@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 
-/* .dv-star-rating-star {
+.dv-star-rating-star {
   font-size: 32px;
   margin: 0px 10px 0px 10px
 }
 
 .start-rating {
   width: 40px;
-} */
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
