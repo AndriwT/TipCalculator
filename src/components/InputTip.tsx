@@ -1,5 +1,5 @@
 import { useState, KeyboardEvent, ChangeEvent, MouseEventHandler } from "react";
-import Rating from "react-star-rating-component";
+import StarRatingComponent from "react-star-rating-component";
 
 const InputTip = () => {
   const [total, setTotal] = useState("");
@@ -88,7 +88,7 @@ const InputTip = () => {
           </div>
           <div className="flex flex-col items-center star-rating mb-4">
             <h3 className="text-xs">Rate your experience</h3>
-            <Rating
+            <StarRatingComponent
               name="rating"
               value={rating}
               onStarClick={(nextValue, prevValue) =>
