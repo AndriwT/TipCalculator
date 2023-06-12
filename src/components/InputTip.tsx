@@ -6,15 +6,17 @@ const InputTip = () => {
   const [rating, setRating] = useState(0);
   const [percent, setPercent] = useState("0.20");
   const [people, setPeople] = useState("");
-  const [tip, setTip] = useState("$ 0.00");
-  const [netTotal, setNetTotal] = useState("$ 0.00");
-  const [netTotalPerPerson, setNetTotalPerPerson] = useState("$ 0.00");
+  const [tip, setTip] = useState("");
+  const [netTotal, setNetTotal] = useState("");
+  const [netTotalPerPerson, setNetTotalPerPerson] = useState("");
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const totalParam = searchParams.get("total");
     const splitParam = searchParams.get("people");
     const tipParam = searchParams.get("tip");
+    const netTotalParam = searchParams.get("netTotal");
+    const netTotalPerPersonParam = searchParams.get("netTotalPerPerson");
 
     if (totalParam) {
       setTotal(totalParam);
@@ -25,6 +27,12 @@ const InputTip = () => {
     if (tipParam) {
       setTip(tipParam);
     }
+    if (netTotalParam) {
+      setNetTotal(netTotalParam);
+    }
+    if (netTotalPerPersonParam) {
+      setNetTotalPerPerson(netTotalPerPersonParam);
+    }
   }, []);
 
   useEffect(() => {
@@ -33,11 +41,13 @@ const InputTip = () => {
     searchParams.set("total", String(total));
     searchParams.set("people", String(people));
     searchParams.set("tip", String(tip));
+    searchParams.set("netTotal", String(netTotal));
+    searchParams.set("netTotalPerPerson", String(netTotalPerPerson));
 
     let params = `?${searchParams.toString()}`;
 
     window.history.replaceState(null, "", params);
-  }, [total, people, tip]);
+  }, [total, people, tip, netTotal, netTotalPerPerson]);
 
   const handleTotalChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value);
