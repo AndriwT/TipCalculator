@@ -10,22 +10,34 @@ const InputTip = () => {
   const [netTotal, setNetTotal] = useState("$ 0.00");
   const [netTotalPerPerson, setNetTotalPerPerson] = useState("$ 0.00");
 
-  // useEffect(() => {
-  //   const searchParams = new URLSearchParams(window.location.search);
-  //   const totalParam = searchParams.get("total");
-  //   if (totalParam !== null) {
-  //     setTotal(totalParam);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const totalParam = searchParams.get("total");
+    const splitParam = searchParams.get("people");
+    const tipParam = searchParams.get("tip");
 
-  // useEffect(() => {
-  //   const searchParams = new URLSearchParams(window.location.search);
+    if (totalParam) {
+      setTotal(totalParam);
+    }
+    if (splitParam) {
+      setPeople(splitParam);
+    }
+    if (tipParam) {
+      setTip(tipParam);
+    }
+  }, []);
 
-  //   searchParams.set("total", String(total));
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
 
-  //   let params = `?${searchParams.toString()}`;
-  //   window.history.replaceState(null, "", params);
-  // }, [total]);
+    searchParams.set("total", String(total));
+    searchParams.set("people", String(people));
+    searchParams.set("tip", String(tip));
+
+    let params = `?${searchParams.toString()}`;
+
+    window.history.replaceState(null, "", params);
+  }, [total, people, tip]);
 
   const handleTotalChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTotal(e.target.value);
@@ -69,9 +81,8 @@ const InputTip = () => {
     } else {
       setTip("$ " + totalTipPerPerson.toFixed(2).toString());
       setNetTotalPerPerson("$ " + netTotalPerPerson.toFixed(2).toString());
+      setNetTotal("$ " + (totalTipNum + totalNum).toFixed(2).toString());
     }
-
-    setNetTotal("$ " + (totalTipNum + totalNum).toFixed(2).toString());
   };
 
   const share = () => {
