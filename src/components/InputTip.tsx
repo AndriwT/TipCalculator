@@ -1,5 +1,8 @@
 import { useState, KeyboardEvent, ChangeEvent, useEffect } from "react";
 import StarRatingComponent from "react-star-rating-component";
+import { RWebShare } from "react-web-share";
+import MosaicBackground from "./MosaicBackground";
+import ShareIcon from "@mui/icons-material/Share";
 
 const InputTip = () => {
   const [total, setTotal] = useState("");
@@ -9,6 +12,7 @@ const InputTip = () => {
   const [tip, setTip] = useState("");
   const [netTotal, setNetTotal] = useState("");
   const [netTotalPerPerson, setNetTotalPerPerson] = useState("");
+  const [url, setUrl] = useState<any>();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -46,7 +50,8 @@ const InputTip = () => {
 
     let params = `?${searchParams.toString()}`;
 
-    window.history.replaceState(null, "", params);
+    let stateUrl = window.history.replaceState(null, "", params);
+    setUrl(stateUrl);
   }, [total, people, tip, netTotal, netTotalPerPerson]);
 
   const handleTotalChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -100,7 +105,7 @@ const InputTip = () => {
   };
 
   return (
-    <>
+    <div className="flex flex-row items-end ml-12">
       <div className="flex flex-col justify-center items-center mt-4 mb-6 bg-gray-400 rounded-3xl border-4 border-white shadow-inner">
         <div className="flex flex-col justify-center items-center rounded-t-3xl bg-gradient-to-t from-cyan-900 to-teal-500 p-6 pb-4 shadow-lg">
           <h2 className="text-xl">Welcome to</h2>
@@ -204,12 +209,22 @@ const InputTip = () => {
           </div>
         </div>
       </div>
-      <div>
-        <button className="text-white" onClick={share}>
-          Share!
-        </button>
+      <div className="ml-4 mb-6 hover:cursor-pointer">
+        <RWebShare
+          data={{
+            text: "Tip-Tap",
+            url: url,
+            title: "Tip-Tap",
+          }}
+          onClick={() => alert("Current Page Shared!")}
+        >
+          <button>
+            <ShareIcon className="text-3xl" />
+          </button>
+        </RWebShare>
       </div>
-    </>
+      {/* <MosaicBackground /> */}
+    </div>
   );
 };
 
