@@ -1,7 +1,6 @@
 import { useState, KeyboardEvent, ChangeEvent, useEffect } from "react";
 import StarRatingComponent from "react-star-rating-component";
 import { RWebShare } from "react-web-share";
-import MosaicBackground from "./MosaicBackground";
 import ShareIcon from "@mui/icons-material/Share";
 
 const InputTip = () => {
@@ -100,14 +99,14 @@ const InputTip = () => {
     }
   };
 
-  const share = () => {
-    alert("The URL of this page is: " + window.location.href);
-  };
+  // const share = () => {
+  //   alert("The URL of this page is: " + window.location.href);
+  // };
 
   return (
     <div className="flex flex-row items-end ml-12">
       <div className="flex flex-col justify-center items-center mt-4 mb-6 bg-gray-400 rounded-3xl border-4 border-white shadow-inner">
-        <div className="flex flex-col justify-center items-center rounded-t-3xl bg-gradient-to-t from-cyan-900 to-teal-500 p-6 pb-4 shadow-lg">
+        <div className="flex flex-col justify-center items-center rounded-t-3xl bg-gradient-to-t from-purple-700 to-cyan-500 p-6 pb-4 shadow-lg">
           <h2 className="text-xl">Welcome to</h2>
           <h1 className="text-6xl">Tip-Tap!</h1>
           <div className="flex flex-col flex-center items-center main-h-screen pt-10">
@@ -149,7 +148,7 @@ const InputTip = () => {
             </div>
           </div>
           <button
-            className="bg-cyan-950 px-16 py-2 rounded-full shadow-lg border-b-2 transition delay-50 duration-200 ease-in-out hover:bg-teal-400 hover:border-t-2 hover:text-black hover:border-b-0 hover:border-black click:bg-teal-400"
+            className="bg-cyan-500 px-16 py-2 rounded-full shadow-lg border-b-2 transition delay-50 duration-200 ease-in-out hover:bg-teal-400 hover:border-t-2 hover:text-black hover:border-b-0 hover:border-black click:bg-teal-400"
             onClick={calculate}
           >
             Calculate!
@@ -216,14 +215,13 @@ const InputTip = () => {
             url: url,
             title: "Tip-Tap",
           }}
-          onClick={() => alert("Current Page Shared!")}
+          onClick={() => alert("Sharing current page!")}
         >
           <button>
             <ShareIcon className="text-3xl" />
           </button>
         </RWebShare>
       </div>
-      {/* <MosaicBackground /> */}
     </div>
   );
 };
