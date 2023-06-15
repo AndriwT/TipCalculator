@@ -4,6 +4,7 @@ import { RWebShare } from "react-web-share";
 import ShareIcon from "@mui/icons-material/Share";
 
 const InputTip = () => {
+  const [loaded, setLoaded] = useState(false);
   const [total, setTotal] = useState("");
   const [rating, setRating] = useState(0);
   const [percent, setPercent] = useState("0.20");
@@ -17,10 +18,15 @@ const InputTip = () => {
     const searchParams = new URLSearchParams(window.location.search);
     const totalParam = searchParams.get("total");
     const splitParam = searchParams.get("people");
+    const ratingParam = searchParams.get("rating");
     const tipParam = searchParams.get("tip");
     const netTotalParam = searchParams.get("netTotal");
     const netTotalPerPersonParam = searchParams.get("netTotalPerPerson");
 
+    if (ratingParam) {
+      console.log("setting rating: ", ratingParam);
+      setRating(Number(ratingParam));
+    }
     if (totalParam) {
       setTotal(totalParam);
     }
@@ -36,29 +42,45 @@ const InputTip = () => {
     if (netTotalPerPersonParam) {
       setNetTotalPerPerson(netTotalPerPersonParam);
     }
+    setLoaded(true);
   }, []);
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
+    if (loaded) {
+      console.log({
+        total,
+        people,
+        tip,
+        netTotal,
+        rating,
+        netTotalPerPerson,
+      });
+      const searchParams = new URLSearchParams(window.location.search);
 
-    searchParams.set("total", String(total));
-    searchParams.set("people", String(people));
-    searchParams.set("tip", String(tip));
-    searchParams.set("netTotal", String(netTotal));
-    searchParams.set("netTotalPerPerson", String(netTotalPerPerson));
+      searchParams.set("total", String(total));
+      searchParams.set("people", String(people));
+      searchParams.set("tip", String(tip));
+      searchParams.set("netTotal", String(netTotal));
+      searchParams.set("rating", String(rating));
+      searchParams.set("netTotalPerPerson", String(netTotalPerPerson));
 
-    let params = `?${searchParams.toString()}`;
+      let params = `?${searchParams.toString()}`;
 
-    let stateUrl = window.history.replaceState(null, "", params);
-    setUrl(stateUrl);
-  }, [total, people, tip, netTotal, netTotalPerPerson]);
+      let stateUrl = window.history.replaceState(null, "", params);
+      setUrl(stateUrl);
+    }
+  }, [total, people, tip, netTotal, netTotalPerPerson, rating, loaded]);
 
   const handleTotalChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTotal(e.target.value);
+    const input = e.target.value;
+    const numberInput = input.replace(/\D/g, "");
+    setTotal(numberInput);
   };
 
   const handlePeopleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPeople(e.target.value);
+    const input = e.target.value;
+    const numberInput = input.replace(/\D/g, "");
+    setPeople(numberInput);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -113,7 +135,7 @@ const InputTip = () => {
   return (
     <div className="flex items-end ml-12">
       <div className="flex flex-col">
-        <div className="flex flex-col justify-center items-center mt-4 mb-4 bg-slate-500 rounded-3xl border-b-2 border-r-2 border-white shadow-inner">
+        <div className="flex flex-col justify-center items-center mt-4 mb-4 bg-slate-500 rounded-3xl shadow-inner">
           <div className="flex flex-col justify-center items-center rounded-t-3xl bg-gradient-to-t from-purple-700 to-cyan-500 p-6 pt-2 pb-4 shadow-xl">
             <h2 className="text-xl">Welcome to</h2>
             <h1 className="text-6xl">Tip-Tap!</h1>
@@ -141,22 +163,37 @@ const InputTip = () => {
                   />
                 </div>
               </div>
-              <div className="flex flex-col items-center star-rating mb-4">
+              <div
+                data-tooltip-target="rating"
+                className="flex flex-col items-center star-rating mb-4"
+              >
                 <h3 className="text-xs">Rate your experience</h3>
-                <StarRatingComponent
-                  name="rating"
-                  value={rating}
-                  onStarClick={(nextValue, prevValue) =>
-                    handleStarClick(nextValue, prevValue)
-                  }
-                  starCount={5}
-                  starColor={"#ffb400"}
-                  emptyStarColor={"#ccc"}
-                />
+                {loaded && (
+                  <StarRatingComponent
+                    name="rating"
+                    value={rating}
+                    onStarClick={(nextValue, prevValue) =>
+                      handleStarClick(nextValue, prevValue)
+                    }
+                    starCount={5}
+                    starColor={"#ffb400"}
+                    emptyStarColor={"#ccc"}
+                  />
+                )}
+                {/*TOOLTIP*/}
+                <div
+                  id="rating"
+                  role="tooltip"
+                  className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+                >
+                  Tip rate from 5% to 25%
+                  <div className="tooltip-arrow" data-popper-arrow></div>
+                </div>
+                {/*TOOLTIP*/}
               </div>
             </div>
             <button
-              className="bg-cyan-500 px-16 py-2 rounded-full shadow-lg border-b-2 border-r-2 transition delay-50 duration-200 ease-in-out hover:bg-teal-300 hover:border-t-2 hover:text-black hover:border-b-0 hover:border-black click:bg-teal-400"
+              className="rounded-full bg-cyan-500 px-6 py-2.5 text-xs font-medium uppercase leading-tight text-white w-40 shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-cyan-300 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] active:bg-purple-800 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
               onClick={calculate}
             >
               Calculate!
@@ -216,27 +253,28 @@ const InputTip = () => {
             </div>
           </div>
         </div>
-        <button
-          className="bg-purple-700 px-16 py-2 rounded-full shadow-lg border-b-2 border-r-2 transition delay-50 duration-200 ease-in-out hover:bg-purple-400 hover:border-t-2 hover:text-black hover:border-b-0 hover:border-black click:bg-teal-400"
-          onClick={reset}
-        >
-          RESET
-        </button>
-      </div>
-
-      <div className="ml-4 mb-6 hover:cursor-pointer">
-        <RWebShare
-          data={{
-            text: "Tip-Tap",
-            url: url,
-            title: "Tip-Tap",
-          }}
-          onClick={() => alert("Sharing current page!")}
-        >
-          <button>
-            <ShareIcon className="text-3xl" />
+        <div className="flex flex-row justify-center items-center w-100">
+          <button
+            className="rounded-full bg-purple-500 px-6 py-2.5 text-xs font-medium uppercase leading-tight text-white w-72 shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-purple-300 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] active:bg-cyan-800 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]"
+            onClick={reset}
+          >
+            RESET
           </button>
-        </RWebShare>
+          <div className="ml-4 hover:cursor-pointer">
+            <RWebShare
+              data={{
+                text: "Tip-Tap",
+                url: url,
+                title: "Tip-Tap",
+              }}
+              onClick={() => alert("Sharing current page!")}
+            >
+              <button>
+                <ShareIcon className="text-3xl" />
+              </button>
+            </RWebShare>
+          </div>
+        </div>
       </div>
     </div>
   );
