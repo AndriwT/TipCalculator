@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 import { RWebShare } from "react-web-share";
 
 interface MyComponentProps {
-  url: any;
+  url: string;
 }
 
 export const ShareMobil: React.FC<MyComponentProps> = ({ url }) => {
@@ -12,7 +12,7 @@ export const ShareMobil: React.FC<MyComponentProps> = ({ url }) => {
       <RWebShare
         data={{
           text: "Tip-Tap",
-          url: { url },
+          url: url,
           title: "Tip-Tap",
         }}
         onClick={() => alert("Sharing current page!")}
