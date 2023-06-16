@@ -25,16 +25,26 @@ export const ShareMobil: React.FC<MyComponentProps> = ({ url }) => {
   );
 };
 
-const handleClick = () => {
+async function handleClick() {
+  await navigator.clipboard.writeText(location.href);
   alert("URL Copied!");
-};
+}
 
-export const ShareBrowser = () => {
+export const ShareBrowser: React.FC<MyComponentProps> = ({ url }) => {
   return (
     <div className="ml-4 hover:cursor-pointer">
-      <button onClick={handleClick}>
-        <ShareIcon className="text-3xl" />
-      </button>
+      <RWebShare
+        data={{
+          text: "Tip-Tap",
+          url: url,
+          title: "Tip-Tap",
+        }}
+        onClick={handleClick}
+      >
+        <button>
+          <ShareIcon className="text-3xl" />
+        </button>
+      </RWebShare>
     </div>
   );
 };

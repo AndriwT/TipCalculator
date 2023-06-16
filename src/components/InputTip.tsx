@@ -122,7 +122,7 @@ const InputTip = () => {
 
   const mobil = () => {
     try {
-      return typeof screen.orientation !== "undefined";
+      return typeof screen.orientation === "undefined";
     } catch (error) {
       return false;
     }
@@ -267,7 +267,7 @@ const InputTip = () => {
           >
             RESET
           </button>
-          {mobil() ? <ShareMobil url={url} /> : <ShareBrowser />}
+          {mobil() ? <ShareMobil url={url} /> : <ShareBrowser url={url} />}
         </div>
       </div>
     </div>
