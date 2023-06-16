@@ -1,7 +1,6 @@
 import { useState, KeyboardEvent, ChangeEvent, useEffect } from "react";
 import StarRatingComponent from "react-star-rating-component";
-import { RWebShare } from "react-web-share";
-import ShareIcon from "@mui/icons-material/Share";
+import { ShareBrowser, ShareMobil } from "./Share";
 
 const InputTip = () => {
   const [loaded, setLoaded] = useState(false);
@@ -121,6 +120,14 @@ const InputTip = () => {
     }
   };
 
+  const mobil = () => {
+    try {
+      return typeof screen.orientation !== "undefined";
+    } catch (error) {
+      return false;
+    }
+  };
+
   const reset = () => {
     setTotal("");
     setRating(0);
@@ -133,9 +140,9 @@ const InputTip = () => {
   };
 
   return (
-    <div className="flex items-end ml-12">
+    <div className="flex justify-center items-end ml-12">
       <div className="flex flex-col">
-        <div className="flex flex-col justify-center items-center mt-4 mb-4 bg-slate-500 rounded-3xl shadow-inner">
+        <div className="flex flex-col justify-center items-center mt-4 mb-4 bg-slate-500 rounded-3xl shadow-lg">
           <div className="flex flex-col justify-center items-center rounded-t-3xl bg-gradient-to-t from-purple-700 to-cyan-500 p-6 pt-2 pb-4 shadow-xl">
             <h2 className="text-xl">Welcome to</h2>
             <h1 className="text-6xl">Tip-Tap!</h1>
@@ -260,20 +267,7 @@ const InputTip = () => {
           >
             RESET
           </button>
-          <div className="ml-4 hover:cursor-pointer">
-            <RWebShare
-              data={{
-                text: "Tip-Tap",
-                url: url,
-                title: "Tip-Tap",
-              }}
-              onClick={() => alert("Sharing current page!")}
-            >
-              <button>
-                <ShareIcon className="text-3xl" />
-              </button>
-            </RWebShare>
-          </div>
+          {mobil() ? <ShareMobil url={url} /> : <ShareBrowser />}
         </div>
       </div>
     </div>

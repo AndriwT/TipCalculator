@@ -105,7 +105,7 @@ body {
   justify-content: center;
   text-align: center;
 }
-
+/* 
 h1 {
   color: #fff;
   font-family: 'Open Sans', sans-serif;
@@ -114,7 +114,7 @@ h1 {
   letter-spacing: -2px;
   text-align: center;
   text-shadow: 1px 2px 1px rgba(0, 0, 0, .6);
-}
+} */
 
 h1:after {
   display: block;
