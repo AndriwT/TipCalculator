@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 import { RWebShare } from "react-web-share";
 
 interface MyComponentProps {
-  url: string;
+  url: any;
 }
 
 export const ShareMobil: React.FC<MyComponentProps> = ({ url }) => {
