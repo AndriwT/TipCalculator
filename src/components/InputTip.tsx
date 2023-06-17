@@ -79,6 +79,7 @@ const InputTip = () => {
   const handlePeopleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     const numberInput = input.replace(/\D/g, "");
+
     setPeople(numberInput);
   };
 
@@ -122,7 +123,7 @@ const InputTip = () => {
 
   const mobil = () => {
     try {
-      return typeof screen.orientation === "undefined";
+      return typeof screen.orientation !== "undefined";
     } catch (error) {
       return false;
     }
@@ -267,7 +268,7 @@ const InputTip = () => {
           >
             RESET
           </button>
-          {mobil() ? <ShareMobil url={url} /> : <ShareBrowser url={url} />}
+          {mobil() ? <ShareBrowser /> : <ShareMobil url={url} />}
         </div>
       </div>
     </div>

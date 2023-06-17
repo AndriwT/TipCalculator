@@ -30,21 +30,12 @@ async function handleClick() {
   alert("URL Copied!");
 }
 
-export const ShareBrowser: React.FC<MyComponentProps> = ({ url }) => {
+export const ShareBrowser = () => {
   return (
     <div className="ml-4 hover:cursor-pointer">
-      <RWebShare
-        data={{
-          text: "Tip-Tap",
-          url: url,
-          title: "Tip-Tap",
-        }}
-        onClick={handleClick}
-      >
-        <button>
-          <ShareIcon className="text-3xl" />
-        </button>
-      </RWebShare>
+      <button onClick={handleClick}>
+        <ShareIcon className="text-3xl" />
+      </button>
     </div>
   );
 };
